@@ -1,0 +1,28 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "API para um e-commerce deenvolvido durante o Curso da Cubos Academy",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steinglk/e-commerce.git"
+  },
+  "author": "Matheus Stein",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/steinglk/e-commerce/issues"
+  },
+  "homepage": "https://github.com/steinglk/e-commerce#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.95.6",
+    "nodemon": "^2.0.9",
+    "pg": "^8.6.0",
+    "sqlite3": "^5.0.2"
+  }
+}
