@@ -15,6 +15,6 @@ create table if not exists produtos (
     categoria text not null,
     preco integer not null,
     descricao text not null,
-    imagem text not null,
+    imagem text,
     foreign key (usuario_id) references usuarios (id)
 );
