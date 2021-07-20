@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const knex = require('../../conexao');
 const segredo = require('../../segredo');
 const bcrypt = require('bcrypt');
+const nodemailer = require('../../nodemailer');
 
 const efetuarLogin = async (req, res) => {
     const {email, senha} = req.body; 
@@ -22,6 +23,15 @@ const efetuarLogin = async (req, res) => {
             return res.status(404).json('Email ou senha incorretos');
         }
         const token = jwt.sign({ id: usuario.id }, segredo, {expiresIn: '1d'});
+
+        const dadosEmail = {
+            from: 'Ecommerce <nao-respondeer@cubosacademy.com>',
+            to: email,
+            subject: 'Aviso de Login',
+            text: `Olá ${usuario.nome}. Você acabou de fazer um login na plataforma. Caso não foi você redefina sua senha .`
+        }
+        nodemailer.sendMail(dadosEmail);
+        
         const {senha: senhaUsuario, ...dadosUsuario} = usuario;
         return res.status(200).json({
             usuario: dadosUsuario,
