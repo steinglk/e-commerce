@@ -121,7 +121,7 @@ const excluirProduto = async (req, res) => {
             return res.status(404).json('Produto não encontrado')
         }
         try {
-            removido = await knex('produtos').where(produto).delete();
+            removido = await knex('produtos').where(produto).delete().debug();
             if(!removido) {
                 return res.status(404).json('erro ao remover produto');
             }

@@ -1,6 +1,7 @@
 const knex = require('../../conexao');
 const bcrypt = require('bcrypt');
 const segredo = require('../../segredo');
+const nodemailer = require('../../nodemailer');
 
 const cadastrarUsuario = async (req, res) => {
     const {nome, email, senha, nome_loja } = req.body;
@@ -29,13 +30,20 @@ const cadastrarUsuario = async (req, res) => {
             nome_loja,
             senha: senhaCriptografada
         }
-        try {
-            const usuarioCadastrado = await knex('usuarios').insert(usuario);
-            return res.status(200).json('Usuario cadastrado com sucesso!');
-        } catch (error) {
-            return res.status(400).json(error.message);
+        const usuarioCadastrado = await knex('usuarios').insert(usuario);
+        console.log(usuarioCadastrado);
+        if(usuarioCadastrado.rowCount === 0) {
+            return res.status(400).json("Não foi possivel cadastrar usuario");
         }
-        
+        const dadosEmail = {
+            from: 'Ecommerce <nao-respondeer@cubosacademy.com>',
+            to: email,
+            subject: 'Bem vindo ao Market Cubos',
+            text: `Olá ${nome}. Você realizou um cadastro em nossa plataforma. Faça o login com o email: ${email}.`
+        }
+        nodemailer.sendMail(dadosEmail);
+
+        return res.status(200).json('Usuario cadastrado com sucesso!');
     } catch (error) {
         return res.status(400).json(error.message);
     }

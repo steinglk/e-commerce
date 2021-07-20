@@ -21,16 +21,13 @@ const efetuarLogin = async (req, res) => {
         if(!verificarSenha) {
             return res.status(404).json('Email ou senha incorretos');
         }
-        try {
-            const token = jwt.sign({ id: usuario.id }, segredo, {expiresIn: '1d'});
-            const {senha: senhaUsuario, ...dadosUsuario} = usuario;
-            return res.status(200).json({
-                usuario: dadosUsuario,
-                token
-            });
-        } catch (error) {
-            return res.status(500).json(error.message);
-        }
+        const token = jwt.sign({ id: usuario.id }, segredo, {expiresIn: '1d'});
+        const {senha: senhaUsuario, ...dadosUsuario} = usuario;
+        return res.status(200).json({
+            usuario: dadosUsuario,
+            token
+        });
+        
     } catch (error) {
         return res.status(400).json(error.message);
     }
