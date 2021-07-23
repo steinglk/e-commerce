@@ -96,13 +96,11 @@ const editarProduto = async (req, res) => {
         if(categoria && categoria.trim()) {
             novoProduto.categoria = categoria;
         }
-        try {
-            const produtoEditado = await knex('produtos').where(produto).update(novoProduto);
-            return res.status(200).json('Produto editado com sucesso');
-        } catch (error) {
-            return res.status(400).json(error.message);
+        const produtoEditado = await knex('produtos').where(produto).update(novoProduto);
+        if(produtoEditado.rowCount === 0) {
+            return res.status(500).json("Erro ao editar produto");
         }
-
+        return res.status(200).json('Produto editado com sucesso');
     } catch (error) {
         return res.status(400).json(error.message);
     }
@@ -120,15 +118,12 @@ const excluirProduto = async (req, res) => {
         if(!produtoRemovido) {
             return res.status(404).json('Produto não encontrado')
         }
-        try {
-            removido = await knex('produtos').where(produto).delete().debug();
-            if(!removido) {
-                return res.status(404).json('erro ao remover produto');
-            }
-            return res.status(200).json('Produto removido com sucesso!');
-        } catch (error) {
-            return res.status(400).json(error.message);
+        removido = await knex('produtos').where(produto).delete().debug();
+        if(!removido) {
+            return res.status(404).json('erro ao remover produto');
         }
+        return res.status(200).json('Produto removido com sucesso!');
+
     } catch (error) {
         return res.status(400).json(error.message);
     }
